@@ -689,6 +689,7 @@
       // 1. Text/Field input delegation: updates state in-place without destroying DOM nodes
       listContainer.addEventListener('input', (e) => {
         const target = e.target;
+        if (target.dataset.action) return;
         const path = target.dataset.path;
         if (!path) return;
 
