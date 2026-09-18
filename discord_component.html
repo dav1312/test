@@ -3,31 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Discord Component Embed Test Suite</title>
+  <title>Discord Component Embed Creator</title>
 
-  <!-- ============================================================ -->
-  <!-- 1. STANDARD OPEN GRAPH & TWITTER FALLBACK METADATA           -->
-  <!-- ============================================================ -->
-  <meta property="og:site_name" content="Component Embed Tester" />
-  <meta property="og:title" content="Discord Component Embed Test Suite" />
-  <meta property="og:description" content="Static single-page test environment verifying Discord Components V2 unfurls, media items, and Open Graph fallbacks." />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80" />
+  <!-- Fallback Open Graph Metadata for Discordbot crawler -->
+  <meta property="og:site_name" content="Discord Component Creator" />
+  <meta property="og:title" content="Discord Component Embed Creator" />
+  <meta property="og:description" content="Visual builder and code generator for Discord Components V2 link previews." />
+  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#5865F2" />
-  <meta property="og:pubdate" content="2026-09-18T16:00:00Z" />
 
-  <!-- ============================================================ -->
-  <!-- 2. DISCORD COMPONENT EMBED SPECIFICATION PAYLOAD             -->
-  <!-- ============================================================ -->
+  <!-- Confirmed working Discord Component Embed Payload (Single Source of Truth) -->
   <script id="discord:component-embed" type="application/json">
   {
     "component": {
       "type": 17,
-      "accent_color": 14766417,
+      "accent_color": 5793266,
       "spoiler": false,
       "components": [
         {
@@ -35,14 +29,15 @@
           "components": [
             {
               "type": 10,
-              "content": "# This is very fancy"
+              "content": "# Discord Component Embed Test Suite\nVerifying **Components V2** link unfurls on GitHub Pages."
             }
           ],
           "accessory": {
             "type": 2,
             "style": 5,
-            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            "label": "Some link"
+            "url": "https://discord.com/developers/docs/interactions/message-components",
+            "label": "Docs",
+            "emoji": { "name": "📖" }
           }
         },
         {
@@ -51,28 +46,24 @@
         },
         {
           "type": 10,
-          "content": "## Markdown too\n- Nice, _very nice_\n```\ncodeblocks work too\n```"
+          "content": "### Markdown & Formatting Test\n- Headers, lists, and **bold / *italic*** text\n- Inline code `const test = true;` and blocks:\n```json\n{\"status\": \"operational\"}\n```\n- Spoiler test: ||Hidden Easter Egg Text||"
         },
         {
           "type": 12,
           "items": [
             {
-              "media": {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg"
-              },
-              "description": "Image"
+              "media": { "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg" },
+              "description": "Gradient Image"
             },
             {
-              "media": {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a7/How_to_make_video.webm/How_to_make_video.webm.1080p.vp9.webm"
-              },
-              "description": "Video"
+              "media": { "url": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a7/How_to_make_video.webm/How_to_make_video.webm.1080p.vp9.webm" },
+              "description": "Test Video"
             }
           ]
         },
         {
           "type": 10,
-          "content": "Fancy"
+          "content": "*Media gallery above: includes 1 image and 1 direct WebM stream.*"
         },
         {
           "type": 14
@@ -82,14 +73,12 @@
           "components": [
             {
               "type": 10,
-              "content": "Spoilers"
+              "content": "### Thumbnail & Spoiler Section\nThis section tests an accessory thumbnail flagged with `spoiler: true`."
             }
           ],
           "accessory": {
             "type": 11,
-            "media": {
-              "url": "https://stockfishchess.org/images/logo/icon_128x128@2x.webp"
-            },
+            "media": { "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg" },
             "spoiler": true
           }
         },
@@ -103,13 +92,21 @@
             {
               "type": 2,
               "style": 5,
-              "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-              "label": "Links"
+              "url": "https://discord.com/developers/embeds",
+              "label": "Embed Debugger",
+              "emoji": { "name": "🔍" }
             },
             {
               "type": 2,
               "style": 5,
-              "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+              "url": "https://github.com",
+              "label": "GitHub",
+              "emoji": { "name": "🐙" }
+            },
+            {
+              "type": 2,
+              "style": 5,
+              "url": "https://discord.com",
               "label": "Disabled Link",
               "disabled": true
             }
@@ -122,80 +119,729 @@
 
   <style>
     :root {
-      --bg: #0f1115;
-      --card-bg: #1e2029;
-      --border: #2e3240;
-      --text: #dcddde;
-      --heading: #ffffff;
-      --code-bg: #121318;
+      --bg: #1e1f22;
+      --panel-bg: #2b2d31;
+      --card-bg: #313338;
+      --input-bg: #1e1f22;
+      --border: #3f4147;
+      --accent: #5865f2;
+      --accent-hover: #4752c4;
+      --danger: #da373c;
+      --danger-hover: #a1282c;
+      --text: #dbdee1;
+      --heading: #f2f3f5;
+      --muted: #949ba4;
+      --code-color: #58a6ff;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       display: flex;
-      justify-content: center;
-      padding: 40px 20px;
-      line-height: 1.5;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
     }
-    main {
-      width: 100%;
-      max-width: 780px;
+
+    header {
+      background: var(--panel-bg);
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { font-size: 1.15rem; color: var(--heading); }
+    header .links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-left: 16px;
+    }
+    header .links a:hover { color: var(--heading); }
+
+    .app-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .editor-pane {
+      width: 52%;
+      padding: 24px;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background-color: var(--panel-bg);
+    }
+    .section-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 32px;
+      padding: 16px;
+      margin-bottom: 20px;
     }
-    h1 {
-      color: var(--heading);
-      font-size: 1.6rem;
-      margin-bottom: 8px;
-    }
-    p {
-      margin-bottom: 16px;
+    .section-title {
       font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-pane {
+      width: 48%;
+      display: flex;
+      flex-direction: column;
+      background: #111214;
+    }
+    .output-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #18191c;
+      border-bottom: 1px solid var(--border);
+    }
+    .status-stats {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .status-stats span strong { color: var(--heading); }
+    .status-stats span.limit-exceeded strong { color: var(--danger); }
+    .code-container {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
     }
     pre {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-      overflow-x: auto;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 0.85rem;
-      color: #79c0ff;
+      color: var(--code-color);
+      white-space: pre-wrap;
+      word-break: break-all;
     }
-    a {
-      color: #58a6ff;
-      text-decoration: none;
+
+    .form-group { margin-bottom: 12px; }
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    a:hover {
-      text-decoration: underline;
+    input[type="text"], textarea, select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--heading);
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; min-height: 60px; }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .row { display: flex; gap: 12px; }
+    .col { flex: 1; }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--heading);
+      cursor: pointer;
+      text-transform: none;
+      margin-top: 6px;
+    }
+
+    .component-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .component-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--heading);
+    }
+    .component-actions { display: flex; gap: 6px; }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-danger { background: transparent; color: var(--danger); }
+    .btn-danger:hover { background: rgba(218, 55, 60, 0.15); }
+    .btn-subtle { background: var(--border); color: var(--heading); }
+    .btn-subtle:hover { background: #4e5058; }
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .sub-item-box {
+      background: var(--input-bg);
+      border: 1px dashed var(--border);
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Dicord Component Embeds Testing Endpoint</h1>
-    <p>This page contains an inline <code>discord:component-embed</code> payload and Open Graph metadata in its <code>&lt;head&gt;</code>.</p>
-    <p>Inspect payload validation and parser errors using the official <a href="https://discord.com/developers/embeds" target="_blank" rel="noopener noreferrer">Discord Embed Debugger</a>.</p>
 
-    <p>Current embedded JSON payload:</p>
-    <pre id="json-viewer"></pre>
-  </main>
+  <header>
+    <h1>Discord Component Embed Creator</h1>
+    <div class="links">
+      <a href="https://discord.com/developers/embeds" target="_blank" rel="noopener noreferrer">Discord Embed Debugger &rarr;</a>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="editor-pane">
+      <!-- Container Properties -->
+      <div class="section-box">
+        <div class="section-title">Root Container (Type 17)</div>
+        <div class="row">
+          <div class="col form-group">
+            <label for="containerColorPicker">Accent Color</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="color" id="containerColorPicker" style="width: 42px; height: 36px; border: none; background: none; cursor: pointer;" />
+              <input type="text" id="containerColorHex" style="flex: 1;" />
+            </div>
+          </div>
+          <div class="col form-group" style="display: flex; align-items: flex-end; padding-bottom: 8px;">
+            <label class="checkbox-label">
+              <input type="checkbox" id="containerSpoiler" />
+              Spoiler Mask Container
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Component Toolbar -->
+      <div class="section-box">
+        <div class="section-title">Add Components</div>
+        <div class="btn-group" id="add-toolbar"></div>
+      </div>
+
+      <!-- Component List -->
+      <div id="components-list"></div>
+    </div>
+
+    <!-- Live JSON Preview -->
+    <div class="preview-pane">
+      <div class="output-toolbar">
+        <div class="status-stats">
+          <span id="stat-count-wrapper">Components: <strong id="stat-count">0</strong> / 40</span>
+          <span>Size: <strong id="stat-size">0</strong> B</span>
+        </div>
+        <div class="btn-group">
+          <button class="btn-subtle" id="btn-copy-json">Copy JSON</button>
+          <button class="btn-primary" id="btn-copy-script">Copy &lt;script&gt; Tag</button>
+        </div>
+      </div>
+      <div class="code-container">
+        <pre><code id="json-output"></code></pre>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const payload = document.getElementById('discord:component-embed').textContent;
-    try {
-      document.getElementById('json-viewer').textContent = JSON.stringify(JSON.parse(payload), null, 2);
-    } catch (e) {
-      document.getElementById('json-viewer').textContent = payload.trim();
-    }
+    (() => {
+      'use strict';
+
+      // --- Utilities ---
+      const hexToInt = (hex) => parseInt(hex.replace(/^#/, ''), 16) || 0;
+      const intToHex = (num) => '#' + (num || 0).toString(16).padStart(6, '0').toUpperCase();
+      const escapeAttr = (str) => String(str ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+      const escapeHtml = (str) => String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+      // Safe deep path mutator: setByPath(state, 'components.0.content', 'hello')
+      function setByPath(obj, path, value) {
+        const segments = path.split('.');
+        const last = segments.pop();
+        let target = obj;
+        for (const seg of segments) {
+          if (!target[seg]) return;
+          target = target[seg];
+        }
+        target[last] = value;
+      }
+
+      function getByPath(obj, path) {
+        return path.split('.').reduce((acc, seg) => acc?.[seg], obj);
+      }
+
+      // --- Component Registry (Single Source of Truth for Descriptors) ---
+      const REGISTRY = {
+        10: {
+          key: 'text',
+          name: 'Text Display',
+          type: 10,
+          create: () => ({ type: 10, content: 'New Markdown text content.' }),
+          render: (comp, path) => `
+            <div class="form-group">
+              <label>Markdown Content</label>
+              <textarea data-path="${path}.content">${escapeHtml(comp.content || '')}</textarea>
+            </div>
+          `
+        },
+        9: {
+          key: 'section',
+          name: 'Section',
+          type: 9,
+          create: () => ({
+            type: 9,
+            components: [{ type: 10, content: 'Section headline and body.' }],
+            accessory: {
+              type: 2,
+              style: 5,
+              url: 'https://discord.com',
+              label: 'Open',
+              emoji: { name: '' }
+            }
+          }),
+          render: (comp, path) => {
+            const textContent = comp.components?.[0]?.content || '';
+            const acc = comp.accessory;
+            const accType = !acc ? 'none' : acc.type === 11 ? 'thumbnail' : 'button';
+
+            let accessoryHtml = '';
+            if (accType === 'button') {
+              accessoryHtml = `
+                <div class="sub-item-box">
+                  <div class="row">
+                    <div class="col form-group" style="flex: 0 0 70px;">
+                      <label>Emoji</label>
+                      <input type="text" placeholder="🚀" value="${escapeAttr(acc?.emoji?.name || '')}" data-path="${path}.accessory.emoji.name" />
+                    </div>
+                    <div class="col form-group">
+                      <label>Button Label</label>
+                      <input type="text" value="${escapeAttr(acc?.label || '')}" data-path="${path}.accessory.label" />
+                    </div>
+                    <div class="col form-group">
+                      <label>Link URL</label>
+                      <input type="text" value="${escapeAttr(acc?.url || '')}" data-path="${path}.accessory.url" />
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else if (accType === 'thumbnail') {
+              accessoryHtml = `
+                <div class="sub-item-box">
+                  <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="text" value="${escapeAttr(acc?.media?.url || '')}" data-path="${path}.accessory.media.url" />
+                  </div>
+                  <label class="checkbox-label">
+                    <input type="checkbox" ${acc?.spoiler ? 'checked' : ''} data-path="${path}.accessory.spoiler" data-type="boolean" />
+                    Spoiler Mask Thumbnail
+                  </label>
+                </div>
+              `;
+            }
+
+            return `
+              <div class="form-group">
+                <label>Section Text (Markdown)</label>
+                <textarea data-path="${path}.components.0.content">${escapeHtml(textContent)}</textarea>
+              </div>
+              <div class="row">
+                <div class="col form-group">
+                  <label>Accessory Type</label>
+                  <select data-action="change-accessory" data-path="${path}">
+                    <option value="none" ${accType === 'none' ? 'selected' : ''}>None</option>
+                    <option value="button" ${accType === 'button' ? 'selected' : ''}>Link Button (2)</option>
+                    <option value="thumbnail" ${accType === 'thumbnail' ? 'selected' : ''}>Thumbnail (11)</option>
+                  </select>
+                </div>
+              </div>
+              ${accessoryHtml}
+            `;
+          }
+        },
+        12: {
+          key: 'gallery',
+          name: 'Media Gallery',
+          type: 12,
+          create: () => ({
+            type: 12,
+            items: [{ media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, description: '' }]
+          }),
+          render: (comp, path) => `
+            <div class="form-group">
+              <label>Gallery Items</label>
+              ${(comp.items || []).map((item, i) => `
+                <div class="sub-item-box">
+                  <div class="row">
+                    <div class="col form-group">
+                      <label>Media URL</label>
+                      <input type="text" value="${escapeAttr(item.media?.url || '')}" data-path="${path}.items.${i}.media.url" />
+                    </div>
+                    <div class="col form-group">
+                      <label>Alt Text</label>
+                      <input type="text" value="${escapeAttr(item.description || '')}" data-path="${path}.items.${i}.description" />
+                    </div>
+                    <div style="display: flex; align-items: flex-end; padding-bottom: 12px;">
+                      <button class="btn-danger" data-action="delete-array-item" data-path="${path}.items" data-index="${i}">&times;</button>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+              <button class="btn-subtle" data-action="add-gallery-item" data-path="${path}">+ Add Media Item</button>
+            </div>
+          `
+        },
+        1: {
+          key: 'row',
+          name: 'Action Row',
+          type: 1,
+          create: () => ({
+            type: 1,
+            components: [{
+              type: 2,
+              style: 5,
+              url: 'https://discord.com',
+              label: 'Visit',
+              emoji: { name: '' },
+              disabled: false
+            }]
+          }),
+          render: (comp, path) => `
+            <div class="form-group">
+              <label>Action Row Buttons</label>
+              ${(comp.components || []).map((btn, b) => `
+                <div class="sub-item-box">
+                  <div class="row">
+                    <div class="col form-group" style="flex: 0 0 70px;">
+                      <label>Emoji</label>
+                      <input type="text" placeholder="🚀" value="${escapeAttr(btn.emoji?.name || '')}" data-path="${path}.components.${b}.emoji.name" />
+                    </div>
+                    <div class="col form-group">
+                      <label>Label</label>
+                      <input type="text" value="${escapeAttr(btn.label || '')}" data-path="${path}.components.${b}.label" />
+                    </div>
+                    <div class="col form-group">
+                      <label>URL</label>
+                      <input type="text" value="${escapeAttr(btn.url || '')}" data-path="${path}.components.${b}.url" />
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: flex-end; padding-bottom: 12px;">
+                      <label class="checkbox-label">
+                        <input type="checkbox" ${btn.disabled ? 'checked' : ''} data-path="${path}.components.${b}.disabled" data-type="boolean" /> Disabled
+                      </label>
+                    </div>
+                    <div style="display: flex; align-items: flex-end; padding-bottom: 12px;">
+                      <button class="btn-danger" data-action="delete-array-item" data-path="${path}.components" data-index="${b}">&times;</button>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+              <button class="btn-subtle" data-action="add-row-button" data-path="${path}">+ Add Button</button>
+            </div>
+          `
+        },
+        14: {
+          key: 'separator',
+          name: 'Separator',
+          type: 14,
+          create: () => ({ type: 14, spacing: 0 }),
+          render: (comp, path) => `
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" ${comp.spacing === 1 ? 'checked' : ''} data-action="toggle-spacing" data-path="${path}" />
+                Large Spacing (spacing = 1)
+              </label>
+            </div>
+          `
+        }
+      };
+
+      // --- Canonical Initialization ---
+      function loadInitialState() {
+        const headScript = document.getElementById('discord:component-embed');
+        if (headScript) {
+          try {
+            const parsed = JSON.parse(headScript.textContent.trim());
+            if (parsed?.component?.type === 17) {
+              return parsed.component;
+            }
+          } catch (err) {
+            console.error('Failed to parse #discord:component-embed payload, falling back to defaults:', err);
+          }
+        }
+        return {
+          type: 17,
+          accent_color: 5793266,
+          spoiler: false,
+          components: []
+        };
+      }
+
+      const rootContainer = loadInitialState();
+
+      // Ensure optional root fields are initialized
+      rootContainer.accent_color = rootContainer.accent_color ?? 5793266;
+      rootContainer.spoiler = !!rootContainer.spoiler;
+      rootContainer.components = rootContainer.components || [];
+
+      // --- Spec-Compliant Component Counting ---
+      function countComponents(root) {
+        let count = 1; // Root type 17
+        for (const c of root.components) {
+          count++;
+          if (c.type === 9) { // Section: 1 text + optional accessory
+            if (c.components?.length) count += c.components.length;
+            if (c.accessory) count++;
+          } else if (c.type === 1) { // Action Row: button components
+            if (c.components?.length) count += c.components.length;
+          }
+        }
+        return count;
+      }
+
+      // --- DOM Elements ---
+      const listContainer = document.getElementById('components-list');
+      const addToolbar = document.getElementById('add-toolbar');
+      const jsonOutput = document.getElementById('json-output');
+      const statCount = document.getElementById('stat-count');
+      const statCountWrapper = document.getElementById('stat-count-wrapper');
+      const statSize = document.getElementById('stat-size');
+      const colorPicker = document.getElementById('containerColorPicker');
+      const colorHex = document.getElementById('containerColorHex');
+      const spoilerCheckbox = document.getElementById('containerSpoiler');
+      const btnCopyJson = document.getElementById('btn-copy-json');
+      const btnCopyScript = document.getElementById('btn-copy-script');
+
+      // --- Serialization & Sync ---
+      function getCleanPayload() {
+        return { component: rootContainer };
+      }
+
+      function updatePreview() {
+        const payload = getCleanPayload();
+        const jsonText = JSON.stringify(payload, null, 2);
+        jsonOutput.textContent = jsonText;
+
+        const totalComponents = countComponents(rootContainer);
+        statCount.textContent = totalComponents;
+        if (totalComponents > 40) {
+          statCountWrapper.classList.add('limit-exceeded');
+        } else {
+          statCountWrapper.classList.remove('limit-exceeded');
+        }
+
+        const bytes = new TextEncoder().encode(jsonText).length;
+        statSize.textContent = bytes.toLocaleString();
+      }
+
+      // --- Render Component List ---
+      function renderList() {
+        listContainer.innerHTML = '';
+        rootContainer.components.forEach((comp, idx) => {
+          const descriptor = REGISTRY[comp.type];
+          if (!descriptor) return;
+
+          const card = document.createElement('div');
+          card.className = 'component-card';
+
+          const header = `
+            <div class="component-header">
+              <span>#${idx + 1} - ${descriptor.name} (${comp.type})</span>
+              <div class="component-actions">
+                ${idx > 0 ? `<button class="btn-subtle" data-action="move" data-index="${idx}" data-dir="-1">&uarr;</button>` : ''}
+                ${idx < rootContainer.components.length - 1 ? `<button class="btn-subtle" data-action="move" data-index="${idx}" data-dir="1">&darr;</button>` : ''}
+                <button class="btn-danger" data-action="delete-comp" data-index="${idx}">&times;</button>
+              </div>
+            </div>
+          `;
+
+          card.innerHTML = header + descriptor.render(comp, `components.${idx}`);
+          listContainer.appendChild(card);
+        });
+
+        updatePreview();
+      }
+
+      // --- Event Delegation ---
+      // 1. Text/Field input delegation: updates state in-place without destroying DOM nodes
+      listContainer.addEventListener('input', (e) => {
+        const target = e.target;
+        const path = target.dataset.path;
+        if (!path) return;
+
+        let val = target.value;
+        if (target.dataset.type === 'boolean') {
+          val = target.checked;
+        }
+
+        setByPath(rootContainer, path, val);
+        updatePreview();
+      });
+
+      // 2. Click / Change action delegation
+      listContainer.addEventListener('click', (e) => {
+        const actionBtn = e.target.closest('[data-action]');
+        if (!actionBtn) return;
+
+        const action = actionBtn.dataset.action;
+
+        if (action === 'move') {
+          const idx = parseInt(actionBtn.dataset.index, 10);
+          const dir = parseInt(actionBtn.dataset.dir, 10);
+          const target = idx + dir;
+          if (target >= 0 && target < rootContainer.components.length) {
+            const temp = rootContainer.components[idx];
+            rootContainer.components[idx] = rootContainer.components[target];
+            rootContainer.components[target] = temp;
+            renderList();
+          }
+        } else if (action === 'delete-comp') {
+          const idx = parseInt(actionBtn.dataset.index, 10);
+          rootContainer.components.splice(idx, 1);
+          renderList();
+        } else if (action === 'delete-array-item') {
+          const path = actionBtn.dataset.path;
+          const index = parseInt(actionBtn.dataset.index, 10);
+          const array = getByPath(rootContainer, path);
+          if (Array.isArray(array)) {
+            array.splice(index, 1);
+            renderList();
+          }
+        } else if (action === 'add-gallery-item') {
+          const path = actionBtn.dataset.path;
+          const comp = getByPath(rootContainer, path);
+          if (comp) {
+            comp.items = comp.items || [];
+            comp.items.push({ media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, description: '' });
+            renderList();
+          }
+        } else if (action === 'add-row-button') {
+          const path = actionBtn.dataset.path;
+          const comp = getByPath(rootContainer, path);
+          if (comp) {
+            comp.components = comp.components || [];
+            comp.components.push({
+              type: 2,
+              style: 5,
+              url: 'https://discord.com',
+              label: 'Link',
+              emoji: { name: '' },
+              disabled: false
+            });
+            renderList();
+          }
+        }
+      });
+
+      listContainer.addEventListener('change', (e) => {
+        const target = e.target;
+        const action = target.dataset.action;
+
+        if (action === 'change-accessory') {
+          const path = target.dataset.path;
+          const comp = getByPath(rootContainer, path);
+          if (!comp) return;
+
+          const val = target.value;
+          if (val === 'button') {
+            comp.accessory = { type: 2, style: 5, url: 'https://discord.com', label: 'Open', emoji: { name: '' } };
+          } else if (val === 'thumbnail') {
+            comp.accessory = { type: 11, media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, spoiler: false };
+          } else {
+            delete comp.accessory;
+          }
+          renderList();
+        } else if (action === 'toggle-spacing') {
+          const path = target.dataset.path;
+          const comp = getByPath(rootContainer, path);
+          if (comp) {
+            if (target.checked) comp.spacing = 1;
+            else delete comp.spacing;
+            updatePreview();
+          }
+        }
+      });
+
+      // --- Setup Add Toolbar from Registry ---
+      Object.values(REGISTRY).forEach((desc) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-subtle';
+        btn.textContent = `+ ${desc.name} (${desc.type})`;
+        btn.addEventListener('click', () => {
+          rootContainer.components.push(desc.create());
+          renderList();
+        });
+        addToolbar.appendChild(btn);
+      });
+
+      // --- Root Container Color & Spoiler Binding ---
+      function syncColor(hex) {
+        colorPicker.value = hex;
+        colorHex.value = hex.toUpperCase();
+        rootContainer.accent_color = hexToInt(hex);
+        updatePreview();
+      }
+
+      colorPicker.addEventListener('input', (e) => syncColor(e.target.value));
+      colorHex.addEventListener('input', (e) => {
+        if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) {
+          syncColor(e.target.value);
+        }
+      });
+
+      spoilerCheckbox.addEventListener('change', (e) => {
+        rootContainer.spoiler = e.target.checked;
+        updatePreview();
+      });
+
+      // --- Clipboard UX Helper ---
+      function handleCopy(button, textGenerator) {
+        const originalText = button.textContent;
+        navigator.clipboard.writeText(textGenerator()).then(() => {
+          button.textContent = 'Copied!';
+          setTimeout(() => { button.textContent = originalText; }, 1800);
+        });
+      }
+
+      btnCopyJson.addEventListener('click', () => {
+        handleCopy(btnCopyJson, () => JSON.stringify(getCleanPayload(), null, 2));
+      });
+
+      btnCopyScript.addEventListener('click', () => {
+        handleCopy(btnCopyScript, () => {
+          const json = JSON.stringify(getCleanPayload(), null, 2);
+          return `<script id="discord:component-embed" type="application/json">\n${json}\n<\/script>`;
+        });
+      });
+
+      // --- Initialize UI ---
+      syncColor(intToHex(rootContainer.accent_color));
+      spoilerCheckbox.checked = rootContainer.spoiler;
+      renderList();
+    })();
   </script>
 </body>
 </html>
