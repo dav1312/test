@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discord Component Embed Test Suite</title>
+
+  <!-- ============================================================ -->
+  <!-- 1. STANDARD OPEN GRAPH & TWITTER FALLBACK METADATA           -->
+  <!-- ============================================================ -->
+  <meta property="og:site_name" content="Component Embed Tester" />
+  <meta property="og:title" content="Discord Component Embed Test Suite" />
+  <meta property="og:description" content="Static single-page test environment verifying Discord Components V2 unfurls, media items, and Open Graph fallbacks." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#5865F2" />
+  <meta property="og:pubdate" content="2026-09-18T16:00:00Z" />
+
+  <!-- ============================================================ -->
+  <!-- 2. DISCORD COMPONENT EMBED SPECIFICATION PAYLOAD             -->
+  <!-- ============================================================ -->
+  <script id="discord:component-embed" type="application/json">
+  {
+    "component": {
+      "type": 17,
+      "accent_color": 5793266,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "components": [
+            {
+              "type": 10,
+              "content": "# Discord Component Embed Test Suite\nVerifying **Components V2** link unfurls on GitHub Pages."
+            }
+          ],
+          "accessory": {
+            "type": 2,
+            "style": 5,
+            "url": "https://discord.com/developers/docs/intro",
+            "label": "Docs"
+          }
+        },
+        {
+          "type": 14,
+          "spacing": 1
+        },
+        {
+          "type": 10,
+          "content": "### Markdown & Formatting Test\n- Headers, lists, and **bold / *italic*** text\n- Inline code `const test = true;` and blocks:\n```json\n{\"status\": \"operational\"}\n```\n- Spoiler test: ||Hidden Easter Egg Text||"
+        },
+        {
+          "type": 12,
+          "items": [
+            {
+              "media": {
+                "url": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&auto=format&fit=crop&q=80"
+              },
+              "description": "Gradient Banner 1"
+            },
+            {
+              "media": {
+                "url": "https://images.unsplash.com/photo-1557683316-973673baf926?w=800&auto=format&fit=crop&q=80"
+              },
+              "description": "Gradient Banner 2"
+            },
+            {
+              "media": {
+                "url": "https://www.papytane.com/mp4/boiteame.mp4"
+              },
+              "description": "Test Video MP4"
+            }
+          ]
+        },
+        {
+          "type": 10,
+          "content": "*Media gallery above: includes 2 images and 1 direct MP4 stream.*"
+        },
+        {
+          "type": 14
+        },
+        {
+          "type": 9,
+          "components": [
+            {
+              "type": 10,
+              "content": "### Thumbnail & Spoiler Section\nThis section tests an accessory thumbnail flagged with `spoiler: true`."
+            }
+          ],
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&auto=format&fit=crop&q=80"
+            },
+            "spoiler": true
+          }
+        },
+        {
+          "type": 14,
+          "spacing": 1
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "url": "https://discord.com/developers/embeds",
+              "label": "Embed Debugger"
+            },
+            {
+              "type": 2,
+              "style": 5,
+              "url": "https://github.com",
+              "label": "GitHub"
+            },
+            {
+              "type": 2,
+              "style": 5,
+              "url": "https://discord.com",
+              "label": "Disabled Link",
+              "disabled": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card-bg: #1e2029;
+      --border: #2e3240;
+      --text: #dcddde;
+      --heading: #ffffff;
+      --code-bg: #121318;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      line-height: 1.5;
+    }
+    main {
+      width: 100%;
+      max-width: 780px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+    }
+    h1 {
+      color: var(--heading);
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+    p {
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      color: #79c0ff;
+    }
+    a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Dicord Component Embeds Testing Endpoint</h1>
+    <p>This page contains an inline <code>discord:component-embed</code> payload and Open Graph metadata in its <code>&lt;head&gt;</code>.</p>
+    <p>Inspect payload validation and parser errors using the official <a href="https://discord.com/developers/embeds" target="_blank" rel="noopener noreferrer">Discord Embed Debugger</a>.</p>
+
+    <p>Current embedded JSON payload:</p>
+    <pre id="json-viewer"></pre>
+  </main>
+
+  <script>
+    const payload = document.getElementById('discord:component-embed').textContent;
+    try {
+      document.getElementById('json-viewer').textContent = JSON.stringify(JSON.parse(payload), null, 2);
+    } catch (e) {
+      document.getElementById('json-viewer').textContent = payload.trim();
+    }
+  </script>
+</body>
+</html>
