@@ -385,7 +385,9 @@
         const last = segments.pop();
         let target = obj;
         for (const seg of segments) {
-          if (!target[seg]) return;
+          if (target[seg] == null) {
+            target[seg] = {};
+          }
           target = target[seg];
         }
         target[last] = value;
@@ -433,16 +435,20 @@
             if (accType === 'button') {
               accessoryHtml = `
                 <div class="sub-item-box">
-                  <div class="row">
-                    <div class="col form-group" style="flex: 0 0 70px;">
+                  <div class="row" style="flex-wrap: wrap;">
+                    <div class="col form-group" style="flex: 0 0 100px;">
                       <label>Emoji</label>
-                      <input type="text" placeholder="🚀" value="${escapeAttr(acc?.emoji?.name || '')}" data-path="${path}.accessory.emoji.name" />
+                      <input type="text" placeholder="🚀 or name:id" value="${escapeAttr(acc?.emoji?.name || '')}" data-emoji-target="${path}.accessory.emoji" data-path="${path}.accessory.emoji.name" />
                     </div>
-                    <div class="col form-group">
+                    <div class="col form-group" style="flex: 0 0 140px;">
+                      <label>Emoji ID</label>
+                      <input type="text" placeholder="Optional ID" value="${escapeAttr(acc?.emoji?.id || '')}" data-emoji-id-target="${path}.accessory.emoji" data-path="${path}.accessory.emoji.id" />
+                    </div>
+                    <div class="col form-group" style="flex: 1 1 120px;">
                       <label>Button Label</label>
                       <input type="text" value="${escapeAttr(acc?.label || '')}" data-path="${path}.accessory.label" />
                     </div>
-                    <div class="col form-group">
+                    <div class="col form-group" style="flex: 1 1 160px;">
                       <label>Link URL</label>
                       <input type="text" value="${escapeAttr(acc?.url || '')}" data-path="${path}.accessory.url" />
                     </div>
@@ -535,16 +541,20 @@
               <label>Action Row Buttons</label>
               ${(comp.components || []).map((btn, b) => `
                 <div class="sub-item-box">
-                  <div class="row">
-                    <div class="col form-group" style="flex: 0 0 70px;">
+                  <div class="row" style="flex-wrap: wrap;">
+                    <div class="col form-group" style="flex: 0 0 100px;">
                       <label>Emoji</label>
-                      <input type="text" placeholder="🚀" value="${escapeAttr(btn.emoji?.name || '')}" data-path="${path}.components.${b}.emoji.name" />
+                      <input type="text" placeholder="🚀 or name:id" value="${escapeAttr(btn.emoji?.name || '')}" data-emoji-target="${path}.components.${b}.emoji" data-path="${path}.components.${b}.emoji.name" />
                     </div>
-                    <div class="col form-group">
+                    <div class="col form-group" style="flex: 0 0 140px;">
+                      <label>Emoji ID</label>
+                      <input type="text" placeholder="Optional ID" value="${escapeAttr(btn.emoji?.id || '')}" data-emoji-id-target="${path}.components.${b}.emoji" data-path="${path}.components.${b}.emoji.id" />
+                    </div>
+                    <div class="col form-group" style="flex: 1 1 120px;">
                       <label>Label</label>
                       <input type="text" value="${escapeAttr(btn.label || '')}" data-path="${path}.components.${b}.label" />
                     </div>
-                    <div class="col form-group">
+                    <div class="col form-group" style="flex: 1 1 160px;">
                       <label>URL</label>
                       <input type="text" value="${escapeAttr(btn.url || '')}" data-path="${path}.components.${b}.url" />
                     </div>
@@ -690,6 +700,64 @@
       listContainer.addEventListener('input', (e) => {
         const target = e.target;
         if (target.dataset.action) return;
+
+        // Custom emoji detection for Emoji Name input
+        if (target.dataset.emojiTarget) {
+          const emojiBasePath = target.dataset.emojiTarget;
+          const raw = target.value.trim();
+          const customEmojiMatch = raw.match(/^<?(?:a)?:?([a-zA-Z0-9_-]+):(\d+)>?:?$/);
+
+          if (customEmojiMatch) {
+            const [, emojiName, emojiId] = customEmojiMatch;
+            target.value = emojiName;
+            setByPath(rootContainer, `${emojiBasePath}.name`, emojiName);
+            setByPath(rootContainer, `${emojiBasePath}.id`, emojiId);
+
+            const container = target.closest('.sub-item-box');
+            if (container) {
+              const idInput = container.querySelector(`[data-emoji-id-target="${emojiBasePath}"]`);
+              if (idInput) idInput.value = emojiId;
+            }
+            updatePreview();
+            return;
+          }
+
+          setByPath(rootContainer, `${emojiBasePath}.name`, target.value);
+          updatePreview();
+          return;
+        }
+
+        // Custom emoji ID input handling
+        if (target.dataset.emojiIdTarget) {
+          const emojiBasePath = target.dataset.emojiIdTarget;
+          const raw = target.value.trim();
+          const customEmojiMatch = raw.match(/^<?(?:a)?:?([a-zA-Z0-9_-]+):(\d+)>?:?$/);
+
+          if (customEmojiMatch) {
+            const [, emojiName, emojiId] = customEmojiMatch;
+            target.value = emojiId;
+            setByPath(rootContainer, `${emojiBasePath}.name`, emojiName);
+            setByPath(rootContainer, `${emojiBasePath}.id`, emojiId);
+
+            const container = target.closest('.sub-item-box');
+            if (container) {
+              const nameInput = container.querySelector(`[data-emoji-target="${emojiBasePath}"]`);
+              if (nameInput) nameInput.value = emojiName;
+            }
+            updatePreview();
+            return;
+          }
+
+          const emojiObj = getByPath(rootContainer, emojiBasePath);
+          if (raw) {
+            setByPath(rootContainer, `${emojiBasePath}.id`, raw);
+          } else if (emojiObj) {
+            delete emojiObj.id;
+          }
+          updatePreview();
+          return;
+        }
+
         const path = target.dataset.path;
         if (!path) return;
 
