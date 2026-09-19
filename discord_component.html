@@ -129,11 +129,23 @@
       --heading: #f2f3f5;
       --muted: #949ba4;
       --code-color: #58a6ff;
+
+      /* Discord Native Design Tokens */
+      --d-chat-bg: #313338;
+      --d-embed-bg: #2b2d31;
+      --d-embed-border: #383a40;
+      --d-text-normal: #dbdee1;
+      --d-text-heading: #f2f3f5;
+      --d-text-muted: #949ba4;
+      --d-btn-bg: #4e5058;
+      --d-btn-hover: #6d6f78;
+      --d-link: #00a8fc;
+      --d-code-bg: #1e1f22;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "gg sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       display: flex;
@@ -144,18 +156,19 @@
 
     header {
       background: var(--panel-bg);
-      padding: 12px 24px;
+      padding: 10px 24px;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 10;
     }
-    header h1 { font-size: 1.15rem; color: var(--heading); }
+    header h1 { font-size: 1.1rem; color: var(--heading); font-weight: 700; }
+    header .header-actions { display: flex; align-items: center; gap: 12px; }
     header .links a {
       color: var(--muted);
       text-decoration: none;
       font-size: 0.85rem;
-      margin-left: 16px;
     }
     header .links a:hover { color: var(--heading); }
 
@@ -165,9 +178,10 @@
       overflow: hidden;
     }
 
+    /* Left: Editor */
     .editor-pane {
-      width: 52%;
-      padding: 24px;
+      width: 50%;
+      padding: 20px;
       overflow-y: auto;
       border-right: 1px solid var(--border);
       background-color: var(--panel-bg);
@@ -177,7 +191,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .section-title {
       font-size: 0.95rem;
@@ -189,24 +203,77 @@
       align-items: center;
     }
 
+    /* Right: Preview Pane (Split: Visualizer Top / JSON Bottom) */
     .preview-pane {
-      width: 48%;
+      width: 50%;
       display: flex;
       flex-direction: column;
       background: #111214;
+      overflow: hidden;
+    }
+
+    /* Top: Visual Visualizer */
+    .visual-preview-section {
+      flex: 1 1 54%;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 2px solid var(--border);
+      background: var(--d-chat-bg);
+      overflow: hidden;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: #18191c;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+    .preview-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .visual-preview-canvas {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+      background-color: var(--d-chat-bg);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* Bottom: JSON Output */
+    .json-section {
+      flex: 1 1 46%;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      background: #111214;
+      overflow: hidden;
     }
     .output-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
+      padding: 10px 16px;
       background: #18191c;
       border-bottom: 1px solid var(--border);
     }
     .status-stats {
       display: flex;
       gap: 16px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--muted);
     }
     .status-stats span strong { color: var(--heading); }
@@ -216,14 +283,15 @@
       overflow: auto;
       padding: 16px;
     }
-    pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.85rem;
+    pre.raw-json {
+      font-family: "gg mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
       color: var(--code-color);
       white-space: pre-wrap;
       word-break: break-all;
     }
 
+    /* Form Controls */
     .form-group { margin-bottom: 12px; }
     label {
       display: block;
@@ -241,7 +309,7 @@
       color: var(--heading);
       padding: 8px 10px;
       border-radius: 4px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-family: inherit;
     }
     textarea { resize: vertical; min-height: 60px; }
@@ -255,13 +323,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--heading);
       cursor: pointer;
       text-transform: none;
       margin-top: 6px;
     }
 
+    /* Cards */
     .component-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -280,6 +349,7 @@
     }
     .component-actions { display: flex; gap: 6px; }
 
+    /* Buttons */
     button {
       cursor: pointer;
       border: none;
@@ -305,18 +375,413 @@
       margin-top: 8px;
       margin-bottom: 8px;
     }
+
+    /* ==========================================================================
+       DISCORD NATIVE EMULATOR STYLES
+       ========================================================================== */
+    /* Type 17 Root Container */
+    .d-embed-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 550px;
+    }
+    .d-embed-container {
+      background: var(--d-embed-bg);
+      border: 1px solid var(--d-embed-border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      padding: 16px;
+      position: relative;
+      width: 100%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+    .d-embed-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      inset-inline-start: 0;
+      width: 4px;
+      height: 100%;
+      background-color: var(--d-accent-color, #5865f2);
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+
+    /* Container Spoilers */
+    .d-spoiler-root .d-embed-container {
+      filter: blur(28px);
+      user-select: none;
+      pointer-events: none;
+    }
+    .d-spoiler-root.revealed .d-embed-container {
+      filter: none;
+      user-select: auto;
+      pointer-events: auto;
+    }
+    .d-spoiler-mask-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.65);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .d-spoiler-root.revealed .d-spoiler-mask-overlay {
+      display: none;
+    }
+    .d-spoiler-badge-large {
+      background: rgba(0, 0, 0, 0.75);
+      color: #f2f3f5;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* Type 10 Text Markdown */
+    .d-type-text {
+      font-size: 0.875rem;
+      line-height: 1.375;
+      color: var(--d-text-normal);
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .d-h1 { font-size: 1.3rem; font-weight: 700; color: var(--d-text-heading); margin: 6px 0 2px; }
+    .d-h2 { font-size: 1.15rem; font-weight: 700; color: var(--d-text-heading); margin: 6px 0 2px; }
+    .d-h3 { font-size: 1rem; font-weight: 700; color: var(--d-text-heading); margin: 4px 0 2px; }
+    .d-h1:first-child, .d-h2:first-child, .d-h3:first-child { margin-top: 0; }
+    .d-subtext { font-size: 0.75rem; color: var(--d-text-muted); display: block; }
+    .d-link { color: var(--d-link); text-decoration: none; word-break: break-word; }
+    .d-link:hover { text-decoration: underline; }
+
+    /* Blockquotes */
+    .d-blockquote-container {
+      display: flex;
+      margin: 4px 0;
+    }
+    .d-blockquote-divider {
+      width: 4px;
+      min-width: 4px;
+      border-radius: 4px;
+      background-color: #4e5058;
+      margin-right: 8px;
+    }
+    .d-blockquote-container blockquote {
+      color: var(--d-text-normal);
+      font-size: 0.875rem;
+      line-height: 1.375;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Inline & Blocks Code */
+    .d-inline-code {
+      background: var(--d-code-bg);
+      border: 1px solid #232428;
+      border-radius: 3px;
+      font-family: "gg mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 85%;
+      padding: 1px 4px;
+      color: #dbdee1;
+      word-break: break-word;
+    }
+    .d-code-block-container {
+      background: var(--d-code-bg);
+      border: 1px solid #232428;
+      border-radius: 4px;
+      margin: 6px 0;
+      overflow: hidden;
+    }
+    pre.d-code-block {
+      padding: 8px 12px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: "gg mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8125rem;
+      color: #dbdee1;
+      white-space: pre-wrap;
+    }
+
+    /* Text Spoilers */
+    .d-spoiler {
+      background-color: #232428;
+      color: transparent;
+      border-radius: 3px;
+      padding: 0 4px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s, color 0.15s;
+    }
+    .d-spoiler.revealed {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: inherit;
+      user-select: auto;
+    }
+
+    /* Custom & Inline Emojis */
+    .d-custom-emoji {
+      width: 22px;
+      height: 22px;
+      vertical-align: -4px;
+      object-fit: contain;
+      margin: 0 1px;
+    }
+    .d-btn-emoji {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    /* Type 9: Section */
+    .d-type-section {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .d-section-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .d-section-accessory {
+      flex-shrink: 0;
+    }
+    .d-section-accessory-thumb {
+      width: 85px;
+      height: 85px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      background: var(--d-code-bg);
+    }
+    .d-section-accessory-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .d-spoiler-thumb img {
+      filter: blur(44px);
+      cursor: pointer;
+    }
+    .d-spoiler-thumb.revealed img { filter: none; }
+    .d-spoiler-tag {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 6px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+    .d-spoiler-thumb.revealed .d-spoiler-tag { display: none; }
+
+    /* Type 12: Media Gallery */
+    .d-type-gallery {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .d-gallery-1 {
+      display: block;
+      max-height: 350px;
+    }
+    .d-gallery-1 .d-gallery-item {
+      width: 100%;
+      max-height: 350px;
+    }
+    .d-gallery-1 img, .d-gallery-1 video {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+    .d-gallery-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      height: 220px;
+    }
+    .d-gallery-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+      height: 260px;
+    }
+    .d-gallery-3 .d-gallery-item:first-child {
+      grid-row: 1 / span 2;
+    }
+    .d-gallery-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+      height: 260px;
+    }
+    .d-gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--d-code-bg);
+      height: 100%;
+      width: 100%;
+    }
+    .d-gallery-item img, .d-gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .d-spoiler-media img, .d-spoiler-media video {
+      filter: blur(44px);
+      cursor: pointer;
+    }
+    .d-spoiler-media.revealed img, .d-spoiler-media.revealed video { filter: none; }
+    .d-spoiler-badge-media {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      pointer-events: none;
+    }
+    .d-spoiler-media.revealed .d-spoiler-badge-media { display: none; }
+
+    /* Type 1: Action Row & Type 2: Link Button */
+    .d-type-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .d-button {
+      align-items: center;
+      background-color: var(--d-btn-bg);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      color: #ffffff;
+      display: inline-flex;
+      font-size: 14px;
+      font-weight: 500;
+      justify-content: center;
+      line-height: 16px;
+      min-height: 32px;
+      padding: 2px 14px;
+      text-decoration: none;
+      gap: 6px;
+      transition: background-color 0.17s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .d-button:hover {
+      background-color: var(--d-btn-hover);
+      text-decoration: none;
+    }
+    .d-button.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .d-btn-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .d-launch-icon {
+      flex-shrink: 0;
+      color: var(--d-text-normal);
+      opacity: 0.85;
+      margin-left: 2px;
+    }
+
+    /* Type 14: Separator */
+    .d-type-separator hr {
+      border: 0;
+      height: 1px;
+      background-color: var(--border);
+      margin: 4px 0;
+    }
+
+    .d-empty-embed {
+      padding: 24px;
+      text-align: center;
+      color: var(--d-text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    /* Modal for Import JSON */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 90%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .modal-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { font-size: 1rem; color: var(--heading); }
+    .modal-body { padding: 16px 18px; }
+    .modal-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Discord Component Embed Creator</h1>
-    <div class="links">
-      <a href="https://discord.com/developers/embeds" target="_blank" rel="noopener noreferrer">Discord Embed Debugger &rarr;</a>
+    <div class="header-actions">
+      <button class="btn-subtle" id="btn-open-import">Import JSON</button>
+      <div class="links">
+        <a href="https://discord.com/developers/embeds" target="_blank" rel="noopener noreferrer">Discord Embed Debugger &rarr;</a>
+      </div>
     </div>
   </header>
 
   <div class="app-container">
+    <!-- Left Editor Pane -->
     <div class="editor-pane">
       <!-- Container Properties -->
       <div class="section-box">
@@ -348,26 +813,68 @@
       <div id="components-list"></div>
     </div>
 
-    <!-- Live JSON Preview -->
+    <!-- Right Pane: Split into Visualizer (Top) and JSON (Bottom) -->
     <div class="preview-pane">
-      <div class="output-toolbar">
-        <div class="status-stats">
-          <span id="stat-count-wrapper">Components: <strong id="stat-count">0</strong> / 40</span>
-          <span>Size: <strong id="stat-size">0</strong> B</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <label class="checkbox-label" style="margin-top: 0; user-select: none;">
-            <input type="checkbox" id="minify-json" />
-            Minify JSON
-          </label>
-          <div class="btn-group">
-            <button class="btn-subtle" id="btn-copy-json">Copy JSON</button>
-            <button class="btn-primary" id="btn-copy-script">Copy &lt;script&gt; Tag</button>
+      <!-- Top Window: Visual Visualizer -->
+      <div class="visual-preview-section">
+        <div class="preview-header">
+          <div class="preview-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+            <span>Live Discord Visualizer</span>
+          </div>
+          <div class="preview-controls">
+            <button class="btn-subtle" id="btn-reset-spoilers" style="padding: 4px 10px; font-size: 0.75rem;">Reset Spoilers</button>
           </div>
         </div>
+        <div class="visual-preview-canvas" id="visual-preview-container">
+          <!-- Live Discord Embed Rendered Here -->
+        </div>
       </div>
-      <div class="code-container">
-        <pre><code id="json-output"></code></pre>
+
+      <!-- Bottom Window: Live JSON Preview & Export -->
+      <div class="json-section">
+        <div class="output-toolbar">
+          <div class="status-stats">
+            <span id="stat-count-wrapper">Components: <strong id="stat-count">0</strong> / 40</span>
+            <span>Size: <strong id="stat-size">0</strong> B</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <label class="checkbox-label" style="margin-top: 0; user-select: none;">
+              <input type="checkbox" id="minify-json" />
+              Minify JSON
+            </label>
+            <div class="btn-group">
+              <button class="btn-subtle" id="btn-copy-json">Copy JSON</button>
+              <button class="btn-primary" id="btn-copy-script">Copy &lt;script&gt; Tag</button>
+            </div>
+          </div>
+        </div>
+        <div class="code-container">
+          <pre class="raw-json"><code id="json-output"></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div id="import-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Import Discord Component Payload</h3>
+        <button class="btn-danger" id="btn-close-import">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 10px;">
+          Paste raw JSON payload (supports <code>{"embeds": [...]}</code>, <code>{"component": {...}}</code>, or <code>{"type": 17, ...}</code>).
+        </p>
+        <textarea id="import-json-input" placeholder="Paste JSON here..." style="min-height: 180px; font-family: monospace;"></textarea>
+        <div id="import-error" style="color: var(--danger); font-size: 0.8rem; margin-top: 6px; display: none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-subtle" id="btn-cancel-import">Cancel</button>
+        <button class="btn-primary" id="btn-apply-import">Load Payload</button>
       </div>
     </div>
   </div>
@@ -398,6 +905,99 @@
 
       function getByPath(obj, path) {
         return path.split('.').reduce((acc, seg) => acc?.[seg], obj);
+      }
+
+      // --- Discord Markdown Parser ---
+      function parseDiscordMarkdown(md) {
+        if (!md) return '';
+
+        // 1. Extract code blocks ```lang ... ```
+        const codeBlocks = [];
+        let text = md.replace(/```[ \t]*(?:([a-zA-Z0-9_+-]+)[ \t]*\r?\n|\r?\n)?([\s\S]*?)```/g, (match, lang, code) => {
+          const id = `\uE000CODEBLOCK${codeBlocks.length}\uE000`;
+          codeBlocks.push({ lang: lang || '', code: code.replace(/\r?\n$/, '') });
+          return id;
+        });
+
+        // 2. Extract inline code `...`
+        const inlineCodes = [];
+        text = text.replace(/`([^`\n]+)`/g, (match, code) => {
+          const id = `\uE000INLINECODE${inlineCodes.length}\uE000`;
+          inlineCodes.push(code);
+          return id;
+        });
+
+        // 3. Escape HTML
+        text = escapeHtml(text);
+
+        // 4. Custom Discord Emojis: <:name:id> or <a:name:id> (already escaped as &lt;...&gt;)
+        text = text.replace(/&lt;(a)?:([a-zA-Z0-9_]{2,32}):(\d{17,21})&gt;/g, (match, animated, name, id) => {
+          const ext = animated ? 'gif' : 'webp';
+          return `<img class="d-custom-emoji" src="https://cdn.discordapp.com/emojis/${id}.${ext}?size=44&quality=lossless" alt=":${name}:" title=":${name}:" draggable="false" />`;
+        });
+
+        // 5. Discord Timestamps: <t:1726760000:R>
+        text = text.replace(/&lt;t:(\d+)(?::([tTdDfFR]))?&gt;/g, (match, ts) => {
+          const d = new Date(parseInt(ts, 10) * 1000);
+          return `<span class="d-timestamp" title="${d.toLocaleString()}">${d.toLocaleDateString()}</span>`;
+        });
+
+        // 6. Subtext: -# text (at start of line)
+        text = text.replace(/^-\# (.*)$/gm, '<small class="d-subtext">$1</small>');
+
+        // 7. Multi-line blockquote: >>>
+        const multiQuoteMatch = text.match(/(?:^|\n)&gt;&gt;&gt; ([\s\S]*)$/);
+        if (multiQuoteMatch) {
+          const beforeQuote = text.substring(0, multiQuoteMatch.index);
+          const quoteContent = multiQuoteMatch[1];
+          text = beforeQuote + '<div class="d-blockquote-container"><div class="d-blockquote-divider"></div><blockquote>' + quoteContent + '</blockquote></div>';
+        } else {
+          // Single line blockquote: > line
+          text = text.replace(/(?:^|\n)&gt; (.*)(?:\n&gt; (.*))*/g, (match) => {
+            const lines = match.split('\n')
+              .filter(l => l.trim().length > 0)
+              .map(l => l.replace(/^&gt; ?/, ''))
+              .join('<br>');
+            return `<div class="d-blockquote-container"><div class="d-blockquote-divider"></div><blockquote>${lines}</blockquote></div>`;
+          });
+        }
+
+        // 8. Headers (#, ##, ###)
+        text = text.replace(/^### (.*)$/gm, '<h3 class="d-h3">$1</h3>');
+        text = text.replace(/^## (.*)$/gm, '<h2 class="d-h2">$1</h2>');
+        text = text.replace(/^# (.*)$/gm, '<h1 class="d-h1">$1</h1>');
+
+        // 9. Links: [text](url)
+        text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a class="d-link" href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+        // 10. Text formatting: bold, italic, underline, strikethrough, spoiler
+        text = text.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+        text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        text = text.replace(/__([^_]+)__/g, '<u>$1</u>');
+        text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
+        text = text.replace(/~~([^~]+)~~/g, '<s>$1</s>');
+        text = text.replace(/\|\|([\s\S]*?)\|\|/g, '<span class="d-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+
+        // 11. Newlines conversion
+        text = text.replace(/\n/g, '<br>');
+        text = text.replace(/<\/(h[1-3]|div|blockquote)><br>/g, '</$1>');
+        text = text.replace(/<br><div class="d-blockquote-container">/g, '<div class="d-blockquote-container">');
+
+        // 12. Restore Inline Codes
+        text = text.replace(/\uE000INLINECODE(\d+)\uE000/g, (_, idx) => {
+          const c = inlineCodes[idx] || '';
+          return `<code class="d-inline-code">${escapeHtml(c)}</code>`;
+        });
+
+        // 13. Restore Code Blocks
+        text = text.replace(/(?:<br>)?\uE000CODEBLOCK(\d+)\uE000(?:<br>)?/g, (_, idx) => {
+          const item = codeBlocks[idx];
+          if (!item) return '';
+          return `<div class="d-code-block-container"><pre class="d-code-block"><code>${escapeHtml(item.code)}</code></pre></div>`;
+        });
+
+        return text;
       }
 
       // --- Component Registry (Single Source of Truth for Descriptors) ---
@@ -498,23 +1098,27 @@
           type: 12,
           create: () => ({
             type: 12,
-            items: [{ media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, description: '' }]
+            items: [{ media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, description: '', spoiler: false }]
           }),
           render: (comp, path) => `
             <div class="form-group">
               <label>Gallery Items</label>
               ${(comp.items || []).map((item, i) => `
                 <div class="sub-item-box">
-                  <div class="row">
-                    <div class="col form-group">
+                  <div class="row" style="flex-wrap: wrap;">
+                    <div class="col form-group" style="flex: 2 1 200px;">
                       <label>Media URL</label>
                       <input type="text" value="${escapeAttr(item.media?.url || '')}" data-path="${path}.items.${i}.media.url" />
                     </div>
-                    <div class="col form-group">
+                    <div class="col form-group" style="flex: 1 1 140px;">
                       <label>Alt Text</label>
                       <input type="text" value="${escapeAttr(item.description || '')}" data-path="${path}.items.${i}.description" />
                     </div>
-                    <div style="display: flex; align-items: flex-end; padding-bottom: 12px;">
+                    <div style="display: flex; align-items: flex-end; padding-bottom: 12px; gap: 8px;">
+                      <label class="checkbox-label" style="margin-top: 0; white-space: nowrap;">
+                        <input type="checkbox" ${item.spoiler ? 'checked' : ''} data-path="${path}.items.${i}.spoiler" data-type="boolean" />
+                        Spoiler
+                      </label>
                       <button class="btn-danger" data-action="delete-array-item" data-path="${path}.items" data-index="${i}">&times;</button>
                     </div>
                   </div>
@@ -606,9 +1210,7 @@
         };
       }
 
-      const rootContainer = loadInitialState();
-
-      // Ensure optional root fields are initialized
+      let rootContainer = loadInitialState();
       rootContainer.accent_color = rootContainer.accent_color ?? 5793266;
       rootContainer.spoiler = !!rootContainer.spoiler;
       rootContainer.components = rootContainer.components || [];
@@ -618,10 +1220,10 @@
         let count = 1; // Root type 17
         for (const c of root.components) {
           count++;
-          if (c.type === 9) { // Section: 1 text + optional accessory
+          if (c.type === 9) {
             if (c.components?.length) count += c.components.length;
             if (c.accessory) count++;
-          } else if (c.type === 1) { // Action Row: button components
+          } else if (c.type === 1) {
             if (c.components?.length) count += c.components.length;
           }
         }
@@ -641,6 +1243,17 @@
       const spoilerCheckbox = document.getElementById('containerSpoiler');
       const btnCopyJson = document.getElementById('btn-copy-json');
       const btnCopyScript = document.getElementById('btn-copy-script');
+      const visualPreviewContainer = document.getElementById('visual-preview-container');
+      const btnResetSpoilers = document.getElementById('btn-reset-spoilers');
+
+      // Modal Elements
+      const btnOpenImport = document.getElementById('btn-open-import');
+      const importModal = document.getElementById('import-modal');
+      const btnCloseImport = document.getElementById('btn-close-import');
+      const btnCancelImport = document.getElementById('btn-cancel-import');
+      const btnApplyImport = document.getElementById('btn-apply-import');
+      const importJsonInput = document.getElementById('import-json-input');
+      const importError = document.getElementById('import-error');
 
       // --- Serialization & Sync ---
       function cleanComponent(obj) {
@@ -672,6 +1285,133 @@
           : JSON.stringify(payload, null, 2);
       }
 
+      // --- Visualizer Renderer Helper Functions ---
+      function renderButtonHtml(btn) {
+        if (!btn) return '';
+        const isCustomEmoji = !!btn.emoji?.id;
+        const emojiName = btn.emoji?.name || '';
+        const emojiId = btn.emoji?.id || '';
+
+        let emojiTag = '';
+        if (isCustomEmoji) {
+          emojiTag = `<img class="d-btn-emoji" src="https://cdn.discordapp.com/emojis/${emojiId}.webp?size=44&quality=lossless" alt="${escapeAttr(emojiName)}" />`;
+        } else if (emojiName) {
+          emojiTag = `<span class="d-btn-unicode-emoji">${escapeHtml(emojiName)}</span>`;
+        }
+
+        const disabledClass = btn.disabled ? 'disabled' : '';
+        const href = btn.disabled ? 'javascript:void(0)' : escapeAttr(btn.url || '#');
+
+        return `
+          <a class="d-button ${disabledClass}" href="${href}" target="_blank" rel="noopener noreferrer">
+            ${emojiTag}
+            <span class="d-btn-label">${escapeHtml(btn.label || '')}</span>
+            <svg class="d-launch-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M15 2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0V4.41l-4.3 4.3a1 1 0 1 1-1.4-1.42L19.58 3H16a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+              <path fill-rule="evenodd" d="M5 2a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 1 0-2 0v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 1 0 0-2H5Z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        `;
+      }
+
+      function renderVisualComponent(comp) {
+        if (!comp) return '';
+
+        // Type 10: Text Display
+        if (comp.type === 10) {
+          return `<div class="d-component d-type-text">${parseDiscordMarkdown(comp.content || '')}</div>`;
+        }
+
+        // Type 9: Section
+        if (comp.type === 9) {
+          const textHtml = (comp.components || []).map(c => parseDiscordMarkdown(c.content || '')).join('');
+          let accessoryHtml = '';
+          if (comp.accessory) {
+            if (comp.accessory.type === 11) {
+              const isSpoiler = !!comp.accessory.spoiler;
+              accessoryHtml = `
+                <div class="d-section-accessory-thumb ${isSpoiler ? 'd-spoiler-thumb' : ''}" ${isSpoiler ? 'onclick="this.classList.toggle(\'revealed\')"' : ''}>
+                  <img src="${escapeAttr(comp.accessory.media?.url || '')}" alt="Thumbnail" />
+                  ${isSpoiler ? '<span class="d-spoiler-tag">SPOILER</span>' : ''}
+                </div>
+              `;
+            } else if (comp.accessory.type === 2) {
+              accessoryHtml = renderButtonHtml(comp.accessory);
+            }
+          }
+          return `
+            <div class="d-component d-type-section">
+              <div class="d-section-body">${textHtml}</div>
+              ${accessoryHtml ? `<div class="d-section-accessory">${accessoryHtml}</div>` : ''}
+            </div>
+          `;
+        }
+
+        // Type 12: Media Gallery
+        if (comp.type === 12) {
+          const items = comp.items || [];
+          if (items.length === 0) return '';
+          const count = items.length;
+          const gridClass = count === 1 ? 'd-gallery-1' : count === 2 ? 'd-gallery-2' : count === 3 ? 'd-gallery-3' : 'd-gallery-4';
+
+          const itemsHtml = items.slice(0, 4).map((item) => {
+            const url = item.media?.url || '';
+            const isVideo = /\.(webm|mp4|mov)(\?.*)?$/i.test(url);
+            const isSpoiler = !!item.spoiler;
+            const alt = escapeAttr(item.description || 'Media');
+
+            const mediaTag = isVideo
+              ? `<video src="${escapeAttr(url)}" controls playsinline poster=""></video>`
+              : `<img src="${escapeAttr(url)}" alt="${alt}" loading="lazy" />`;
+
+            return `
+              <div class="d-gallery-item ${isSpoiler ? 'd-spoiler-media' : ''}" ${isSpoiler ? 'onclick="this.classList.toggle(\'revealed\')"' : ''}>
+                ${mediaTag}
+                ${isSpoiler ? '<div class="d-spoiler-badge-media">SPOILER</div>' : ''}
+              </div>
+            `;
+          }).join('');
+
+          return `<div class="d-component d-type-gallery ${gridClass}">${itemsHtml}</div>`;
+        }
+
+        // Type 1: Action Row
+        if (comp.type === 1) {
+          const buttons = comp.components || [];
+          const buttonsHtml = buttons.map(btn => renderButtonHtml(btn)).join('');
+          return `<div class="d-component d-type-action-row">${buttonsHtml}</div>`;
+        }
+
+        // Type 14: Separator
+        if (comp.type === 14) {
+          return `<div class="d-component d-type-separator"><hr /></div>`;
+        }
+
+        return '';
+      }
+
+      function renderVisualizer() {
+        if (!visualPreviewContainer) return;
+
+        const accentHex = intToHex(rootContainer.accent_color);
+        const isContainerSpoiler = !!rootContainer.spoiler;
+
+        const componentsHtml = (rootContainer.components || []).map(comp => renderVisualComponent(comp)).join('');
+
+        visualPreviewContainer.innerHTML = `
+          <div class="d-embed-wrapper ${isContainerSpoiler ? 'd-spoiler-root' : ''}">
+            <div class="d-embed-container" style="--d-accent-color: ${accentHex};">
+              ${componentsHtml || '<div class="d-empty-embed">No components added yet. Add components from the left pane!</div>'}
+            </div>
+            ${isContainerSpoiler ? `
+              <div class="d-spoiler-mask-overlay" onclick="this.parentElement.classList.toggle('revealed')">
+                <span class="d-spoiler-badge-large">SPOILER</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
       function updatePreview() {
         const jsonText = getFormattedJson();
         jsonOutput.textContent = jsonText;
@@ -686,9 +1426,11 @@
 
         const bytes = new TextEncoder().encode(jsonText).length;
         statSize.textContent = bytes.toLocaleString();
+
+        renderVisualizer();
       }
 
-      // --- Render Component List ---
+      // --- Render Component List (Editor) ---
       function renderList() {
         listContainer.innerHTML = '';
         rootContainer.components.forEach((comp, idx) => {
@@ -717,7 +1459,6 @@
       }
 
       // --- Event Delegation ---
-      // 1. Text/Field input delegation: updates state in-place without destroying DOM nodes
       listContainer.addEventListener('input', (e) => {
         const target = e.target;
         if (target.dataset.action) return;
@@ -791,7 +1532,6 @@
         updatePreview();
       });
 
-      // 2. Click / Change action delegation
       listContainer.addEventListener('click', (e) => {
         const actionBtn = e.target.closest('[data-action]');
         if (!actionBtn) return;
@@ -825,7 +1565,7 @@
           const comp = getByPath(rootContainer, path);
           if (comp) {
             comp.items = comp.items || [];
-            comp.items.push({ media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, description: '' });
+            comp.items.push({ media: { url: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Blue-green-gradient.jpg' }, description: '', spoiler: false });
             renderList();
           }
         } else if (action === 'add-row-button') {
@@ -901,6 +1641,10 @@
 
       minifyCheckbox.addEventListener('change', updatePreview);
 
+      btnResetSpoilers.addEventListener('click', () => {
+        visualPreviewContainer.querySelectorAll('.revealed').forEach(el => el.classList.remove('revealed'));
+      });
+
       // --- Clipboard UX Helper ---
       function handleCopy(button, textGenerator) {
         const originalText = button.textContent;
@@ -921,6 +1665,59 @@
             ? `<script id="discord:component-embed" type="application/json">${json}<\/script>`
             : `<script id="discord:component-embed" type="application/json">\n${json}\n<\/script>`;
         });
+      });
+
+      // --- Import JSON Modal Logic ---
+      btnOpenImport.addEventListener('click', () => {
+        importJsonInput.value = '';
+        importError.style.display = 'none';
+        importModal.style.display = 'flex';
+      });
+
+      const closeImport = () => { importModal.style.display = 'none'; };
+      btnCloseImport.addEventListener('click', closeImport);
+      btnCancelImport.addEventListener('click', closeImport);
+
+      btnApplyImport.addEventListener('click', () => {
+        try {
+          const text = importJsonInput.value.trim();
+          if (!text) return;
+          const parsed = JSON.parse(text);
+
+          let newContainer = null;
+
+          if (parsed?.embeds?.[0]?.components?.[0]?.type === 17) {
+            newContainer = parsed.embeds[0].components[0];
+          } else if (parsed?.component?.type === 17) {
+            newContainer = parsed.component;
+          } else if (parsed?.type === 17) {
+            newContainer = parsed;
+          } else if (Array.isArray(parsed?.components)) {
+            newContainer = {
+              type: 17,
+              accent_color: parsed.accent_color ?? 5793266,
+              spoiler: !!parsed.spoiler,
+              components: parsed.components
+            };
+          }
+
+          if (!newContainer) {
+            throw new Error('Could not find a valid Type 17 Components V2 container in payload.');
+          }
+
+          rootContainer = newContainer;
+          rootContainer.accent_color = rootContainer.accent_color ?? 5793266;
+          rootContainer.spoiler = !!rootContainer.spoiler;
+          rootContainer.components = rootContainer.components || [];
+
+          syncColor(intToHex(rootContainer.accent_color));
+          spoilerCheckbox.checked = rootContainer.spoiler;
+          renderList();
+          closeImport();
+        } catch (err) {
+          importError.textContent = err.message;
+          importError.style.display = 'block';
+        }
       });
 
       // --- Initialize UI ---
