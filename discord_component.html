@@ -135,11 +135,11 @@
       --d-embed-bg: #393a41;
       --d-embed-border: #44454c;
       --d-text-normal: #f3f3f4;
-      --d-text-heading: #f2f3f5;
+      --d-text-heading: #fff;
       --d-text-muted: #949ba4;
       --d-btn-bg: #44454c;
       --d-btn-hover: #484951;
-      --d-link: #00a8fc;
+      --d-link: #76aff6;
       --d-code-bg: #1e1f22;
     }
 
@@ -383,7 +383,7 @@
     .d-embed-wrapper {
       position: relative;
       width: 100%;
-      max-width: 550px;
+      max-width: min(600px, 100%);
     }
     .d-embed-container {
       background: var(--d-embed-bg);
@@ -560,10 +560,14 @@
       margin: 0 1px;
     }
     .d-btn-emoji {
-      width: 18px;
-      height: 18px;
+      width: 1.375em;
+      height: 1.375em;
       object-fit: contain;
       flex-shrink: 0;
+      margin-inline-end: 4px;
+    }
+    .d-btn-unicode-emoji {
+      margin-inline-end: 4px;
     }
 
     /* Type 9: Section */
@@ -705,6 +709,7 @@
     .d-button {
       align-items: center;
       background-color: var(--d-btn-bg);
+      border: 1px solid #97979f0a;
       border-radius: 8px;
       color: #ffffff;
       display: inline-flex;
@@ -713,9 +718,8 @@
       justify-content: center;
       line-height: 16px;
       min-height: 32px;
-      padding: 2px 14px;
+      padding: 3px 11px;
       text-decoration: none;
-      gap: 6px;
       transition: background-color 0.17s ease;
       cursor: pointer;
       user-select: none;
@@ -736,9 +740,8 @@
     }
     .d-launch-icon {
       flex-shrink: 0;
-      color: var(--d-text-normal);
       opacity: 0.85;
-      margin-left: 2px;
+      margin-inline-start: 8px;
     }
 
     /* Type 14: Separator */
@@ -1443,7 +1446,7 @@
           <a class="d-button ${disabledClass}" href="${href}" target="_blank" rel="noopener noreferrer">
             ${emojiTag}
             <span class="d-btn-label">${escapeHtml(btn.label || '')}</span>
-            <svg class="d-launch-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <svg class="d-launch-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" d="M15 2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0V4.41l-4.3 4.3a1 1 0 1 1-1.4-1.42L19.58 3H16a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
               <path fill-rule="evenodd" d="M5 2a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 1 0-2 0v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 1 0 0-2H5Z" clip-rule="evenodd"/>
             </svg>
