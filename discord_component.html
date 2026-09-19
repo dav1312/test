@@ -44,7 +44,7 @@
         },
         {
           "type": 10,
-          "content": "### Markdown & Formatting Test\n- Headers, lists, and **bold / *italic*** text\n- Inline code `const test = true;` and blocks:\n```json\n{\"status\": \"operational\"}\n```\n- Spoiler test: ||Hidden Easter Egg Text||"
+          "content": "### Markdown & Formatting Test\n- Headers, lists, and **bold / *italic*** text\n  - Nested bullet level 2\n- Ordered sub-sequence test:\n  1. First ordered item\n  2. Second ordered item\n- Inline code `const test = true;` and blocks:\n```json\n{\"status\": \"operational\"}\n```\n- Spoiler test: ||Hidden Easter Egg Text||"
         },
         {
           "type": 12,
@@ -462,6 +462,34 @@
     .d-link { color: var(--d-link); text-decoration: none; word-break: break-word; }
     .d-link:hover { text-decoration: underline; }
 
+    /* Discord Lists */
+    .d-list {
+      margin: 4px 0;
+      padding-left: 20px;
+      white-space: normal;
+    }
+    .d-list-ul {
+      list-style-type: disc;
+    }
+    .d-list-ul .d-list-ul {
+      list-style-type: circle;
+    }
+    .d-list-ol {
+      list-style-type: decimal;
+    }
+    .d-list li {
+      margin: 2px 0;
+      line-height: 1.375;
+      color: var(--d-text-normal);
+      word-break: break-word;
+    }
+    .d-list li::marker {
+      color: var(--d-text-muted);
+    }
+    .d-list li > .d-list {
+      margin: 2px 0 0 0;
+    }
+
     /* Blockquotes */
     .d-blockquote-container {
       display: flex;
@@ -551,6 +579,11 @@
     .d-section-body {
       flex: 1;
       min-width: 0;
+      font-size: 0.875rem;
+      line-height: 1.375;
+      color: var(--d-text-normal);
+      word-break: break-word;
+      white-space: pre-wrap;
     }
     .d-section-accessory {
       flex-shrink: 0;
@@ -907,6 +940,99 @@
         return path.split('.').reduce((acc, seg) => acc?.[seg], obj);
       }
 
+      // --- Nested List Parser for Discord Markdown ---
+      function parseLists(text) {
+        const lines = text.split('\n');
+        const outputLines = [];
+        let inList = false;
+        let listStack = [];
+        let currentListHtml = '';
+
+        function closeListsUntil(targetIndent, nextType) {
+          let out = '';
+          while (listStack.length > 0) {
+            const top = listStack[listStack.length - 1];
+            if (top.indent > targetIndent) {
+              out += '</li></' + top.type + '>';
+              listStack.pop();
+            } else if (top.indent === targetIndent && nextType && top.type !== nextType) {
+              out += '</li></' + top.type + '>';
+              listStack.pop();
+            } else {
+              break;
+            }
+          }
+          return out;
+        }
+
+        function closeAllLists() {
+          let out = '';
+          while (listStack.length > 0) {
+            const top = listStack.pop();
+            out += '</li></' + top.type + '>';
+          }
+          inList = false;
+          return out;
+        }
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const match = line.match(/^([ \t]*)(?:([-*+])|(\d+)\.)[ \t]+(.*)$/);
+
+          if (match) {
+            const rawIndent = match[1].replace(/\t/g, '  ').length;
+            const isOrdered = match[3] !== undefined;
+            const type = isOrdered ? 'ol' : 'ul';
+            const startNum = isOrdered ? parseInt(match[3], 10) : null;
+            const content = match[4];
+            const startAttr = (isOrdered && startNum !== 1) ? ` start="${startNum}"` : '';
+            const valueAttr = isOrdered ? ` value="${startNum}"` : '';
+
+            if (!inList) {
+              inList = true;
+              listStack = [{ type, indent: rawIndent }];
+              currentListHtml = `<${type} class="d-list d-list-${type}"${startAttr}><li${valueAttr}>${content}`;
+            } else {
+              const top = listStack[listStack.length - 1];
+              if (rawIndent > top.indent) {
+                listStack.push({ type, indent: rawIndent });
+                currentListHtml += `<${type} class="d-list d-list-${type}"${startAttr}><li${valueAttr}>${content}`;
+              } else if (rawIndent === top.indent) {
+                if (type === top.type) {
+                  currentListHtml += `</li><li${valueAttr}>${content}`;
+                } else {
+                  currentListHtml += closeListsUntil(rawIndent, type);
+                  listStack.push({ type, indent: rawIndent });
+                  currentListHtml += `<${type} class="d-list d-list-${type}"${startAttr}><li${valueAttr}>${content}`;
+                }
+              } else {
+                currentListHtml += closeListsUntil(rawIndent, type);
+                if (listStack.length > 0 && listStack[listStack.length - 1].indent === rawIndent && listStack[listStack.length - 1].type === type) {
+                  currentListHtml += `</li><li${valueAttr}>${content}`;
+                } else {
+                  listStack.push({ type, indent: rawIndent });
+                  currentListHtml += `<${type} class="d-list d-list-${type}"${startAttr}><li${valueAttr}>${content}`;
+                }
+              }
+            }
+          } else {
+            if (inList) {
+              currentListHtml += closeAllLists();
+              outputLines.push(currentListHtml);
+              currentListHtml = '';
+            }
+            outputLines.push(line);
+          }
+        }
+
+        if (inList) {
+          currentListHtml += closeAllLists();
+          outputLines.push(currentListHtml);
+        }
+
+        return outputLines.join('\n');
+      }
+
       // --- Discord Markdown Parser ---
       function parseDiscordMarkdown(md) {
         if (!md) return '';
@@ -930,7 +1056,7 @@
         // 3. Escape HTML
         text = escapeHtml(text);
 
-        // 4. Custom Discord Emojis: <:name:id> or <a:name:id> (already escaped as &lt;...&gt;)
+        // 4. Custom Discord Emojis: <:name:id> or <a:name:id>
         text = text.replace(/&lt;(a)?:([a-zA-Z0-9_]{2,32}):(\d{17,21})&gt;/g, (match, animated, name, id) => {
           const ext = animated ? 'gif' : 'webp';
           return `<img class="d-custom-emoji" src="https://cdn.discordapp.com/emojis/${id}.${ext}?size=44&quality=lossless" alt=":${name}:" title=":${name}:" draggable="false" />`;
@@ -942,23 +1068,23 @@
           return `<span class="d-timestamp" title="${d.toLocaleString()}">${d.toLocaleDateString()}</span>`;
         });
 
-        // 6. Subtext: -# text (at start of line)
-        text = text.replace(/^-\# (.*)$/gm, '<small class="d-subtext">$1</small>');
+        // 6. Subtext: -# text (with optional leading indentation)
+        text = text.replace(/^[ \t]*-\# (.*)$/gm, '<small class="d-subtext">$1</small>');
 
-        // 7. Multi-line blockquote: >>>
+        // 7. Multi-line blockquote: >>> and Single-line blockquote: >
         const multiQuoteMatch = text.match(/(?:^|\n)&gt;&gt;&gt; ([\s\S]*)$/);
         if (multiQuoteMatch) {
           const beforeQuote = text.substring(0, multiQuoteMatch.index);
           const quoteContent = multiQuoteMatch[1];
-          text = beforeQuote + '<div class="d-blockquote-container"><div class="d-blockquote-divider"></div><blockquote>' + quoteContent + '</blockquote></div>';
+          text = beforeQuote + '<div class="d-blockquote-container"><div class="d-blockquote-divider"></div><blockquote>\n' + quoteContent + '\n</blockquote></div>';
         } else {
-          // Single line blockquote: > line
-          text = text.replace(/(?:^|\n)&gt; (.*)(?:\n&gt; (.*))*/g, (match) => {
-            const lines = match.split('\n')
-              .filter(l => l.trim().length > 0)
+          text = text.replace(/(?:^|\n)&gt; (?:.*)(?:\n&gt; .*)*/g, (match) => {
+            const hasLeadingNewline = match.startsWith('\n');
+            const lines = match.trimStart().split('\n')
               .map(l => l.replace(/^&gt; ?/, ''))
-              .join('<br>');
-            return `<div class="d-blockquote-container"><div class="d-blockquote-divider"></div><blockquote>${lines}</blockquote></div>`;
+              .join('\n');
+            const prefix = hasLeadingNewline ? '\n' : '';
+            return `${prefix}<div class="d-blockquote-container"><div class="d-blockquote-divider"></div><blockquote>\n${lines}\n</blockquote></div>`;
           });
         }
 
@@ -967,30 +1093,47 @@
         text = text.replace(/^## (.*)$/gm, '<h2 class="d-h2">$1</h2>');
         text = text.replace(/^# (.*)$/gm, '<h1 class="d-h1">$1</h1>');
 
-        // 9. Links: [text](url)
+        // 9. Bullets and Ordered Lists
+        text = parseLists(text);
+
+        // 10. Links: [text](url)
         text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a class="d-link" href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
 
-        // 10. Text formatting: bold, italic, underline, strikethrough, spoiler
-        text = text.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
-        text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-        text = text.replace(/__([^_]+)__/g, '<u>$1</u>');
-        text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-        text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
-        text = text.replace(/~~([^~]+)~~/g, '<s>$1</s>');
+        // 11. Text formatting: bold, italic, underline, strikethrough, spoiler
+        // Underline
+        text = text.replace(/(?<!_)__(?!_)([^\n_]+?)(?<!_)__(?!_)/g, '<u>$1</u>');
+
+        // Compound Bold + Italic combinations (solves **bold / *italic*** and *italic / **bold***)
+        text = text.replace(/(?<!\*)\*\*\*(?!\*)([^\n]+?)(?<!\*)\*\*\*(?!\*)/g, '<strong><em>$1</em></strong>');
+        text = text.replace(/(?<!\*)\*\*(?!\*)([^\n*]+?)(?<!\*)\*(?!\*)([^\n*]+?)(?<!\*)\*\*\*(?!\*)/g, '<strong>$1<em>$2</em></strong>');
+        text = text.replace(/(?<!\*)\*(?!\*)([^\n*]+?)(?<!\*)\*\*(?!\*)([^\n*]+?)(?<!\*)\*\*\*(?!\*)/g, '<em>$1<strong>$2</strong></em>');
+        text = text.replace(/(?<!\*)\*\*\*(?!\*)([^\n*]+?)(?<!\*)\*(?!\*)([^\n*]+?)(?<!\*)\*\*(?!\*)/g, '<strong><em>$1</em>$2</strong>');
+        text = text.replace(/(?<!\*)\*\*\*(?!\*)([^\n*]+?)(?<!\*)\*\*(?!\*)([^\n*]+?)(?<!\*)\*(?!\*)/g, '<em><strong>$1</strong>$2</em>');
+
+        // Standard Bold
+        text = text.replace(/(?<!\*)\*\*(?!\*)([^\n]+?)(?<!\*)\*\*(?!\*)/g, '<strong>$1</strong>');
+
+        // Standard Italic (* and _)
+        text = text.replace(/(?<!\*)\*(?!\*)([^\n*]+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+        text = text.replace(/(?<!_)_(?!_)([^\n_]+?)(?<!_)_(?!_)/g, '<em>$1</em>');
+
+        // Strikethrough & Spoiler
+        text = text.replace(/~~([^\n~]+?)~~/g, '<s>$1</s>');
         text = text.replace(/\|\|([\s\S]*?)\|\|/g, '<span class="d-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
 
-        // 11. Newlines conversion
+        // 12. Newlines conversion & block boundary cleanup
         text = text.replace(/\n/g, '<br>');
-        text = text.replace(/<\/(h[1-3]|div|blockquote)><br>/g, '</$1>');
+        text = text.replace(/<\/(h[1-3]|div|blockquote|ul|ol)><br>/g, '</$1>');
+        text = text.replace(/<br><(h[1-3]|div|blockquote|ul|ol)/g, '<$1');
         text = text.replace(/<br><div class="d-blockquote-container">/g, '<div class="d-blockquote-container">');
 
-        // 12. Restore Inline Codes
+        // 13. Restore Inline Codes
         text = text.replace(/\uE000INLINECODE(\d+)\uE000/g, (_, idx) => {
           const c = inlineCodes[idx] || '';
           return `<code class="d-inline-code">${escapeHtml(c)}</code>`;
         });
 
-        // 13. Restore Code Blocks
+        // 14. Restore Code Blocks
         text = text.replace(/(?:<br>)?\uE000CODEBLOCK(\d+)\uE000(?:<br>)?/g, (_, idx) => {
           const item = codeBlocks[idx];
           if (!item) return '';
