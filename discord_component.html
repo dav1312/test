@@ -131,14 +131,14 @@
       --code-color: #58a6ff;
 
       /* Discord Native Design Tokens */
-      --d-chat-bg: #313338;
-      --d-embed-bg: #2b2d31;
-      --d-embed-border: #383a40;
-      --d-text-normal: #dbdee1;
+      --d-chat-bg: #323339;
+      --d-embed-bg: #393a41;
+      --d-embed-border: #44454c;
+      --d-text-normal: #f3f3f4;
       --d-text-heading: #f2f3f5;
       --d-text-muted: #949ba4;
-      --d-btn-bg: #4e5058;
-      --d-btn-hover: #6d6f78;
+      --d-btn-bg: #44454c;
+      --d-btn-hover: #484951;
       --d-link: #00a8fc;
       --d-code-bg: #1e1f22;
     }
@@ -483,9 +483,6 @@
       color: var(--d-text-normal);
       word-break: break-word;
     }
-    .d-list li::marker {
-      color: var(--d-text-muted);
-    }
     .d-list li > .d-list {
       margin: 2px 0 0 0;
     }
@@ -594,7 +591,6 @@
       border-radius: 8px;
       overflow: hidden;
       position: relative;
-      background: var(--d-code-bg);
     }
     .d-section-accessory-thumb img {
       width: 100%;
@@ -710,8 +706,7 @@
     .d-button {
       align-items: center;
       background-color: var(--d-btn-bg);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 4px;
+      border-radius: 8px;
       color: #ffffff;
       display: inline-flex;
       font-size: 14px;
