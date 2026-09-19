@@ -22,7 +22,6 @@
     "component": {
       "type": 17,
       "accent_color": 5793266,
-      "spoiler": false,
       "components": [
         {
           "type": 9,
@@ -41,8 +40,7 @@
           }
         },
         {
-          "type": 14,
-          "spacing": 1
+          "type": 14
         },
         {
           "type": 10,
@@ -83,8 +81,7 @@
           }
         },
         {
-          "type": 14,
-          "spacing": 1
+          "type": 14
         },
         {
           "type": 1,
@@ -358,9 +355,15 @@
           <span id="stat-count-wrapper">Components: <strong id="stat-count">0</strong> / 40</span>
           <span>Size: <strong id="stat-size">0</strong> B</span>
         </div>
-        <div class="btn-group">
-          <button class="btn-subtle" id="btn-copy-json">Copy JSON</button>
-          <button class="btn-primary" id="btn-copy-script">Copy &lt;script&gt; Tag</button>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <label class="checkbox-label" style="margin-top: 0; user-select: none;">
+            <input type="checkbox" id="minify-json" />
+            Minify JSON
+          </label>
+          <div class="btn-group">
+            <button class="btn-subtle" id="btn-copy-json">Copy JSON</button>
+            <button class="btn-primary" id="btn-copy-script">Copy &lt;script&gt; Tag</button>
+          </div>
         </div>
       </div>
       <div class="code-container">
@@ -577,15 +580,8 @@
           key: 'separator',
           name: 'Separator',
           type: 14,
-          create: () => ({ type: 14, spacing: 0 }),
-          render: (comp, path) => `
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" ${comp.spacing === 1 ? 'checked' : ''} data-action="toggle-spacing" data-path="${path}" />
-                Large Spacing (spacing = 1)
-              </label>
-            </div>
-          `
+          create: () => ({ type: 14 }),
+          render: () => ''
         }
       };
 
@@ -639,6 +635,7 @@
       const statCount = document.getElementById('stat-count');
       const statCountWrapper = document.getElementById('stat-count-wrapper');
       const statSize = document.getElementById('stat-size');
+      const minifyCheckbox = document.getElementById('minify-json');
       const colorPicker = document.getElementById('containerColorPicker');
       const colorHex = document.getElementById('containerColorHex');
       const spoilerCheckbox = document.getElementById('containerSpoiler');
@@ -646,13 +643,37 @@
       const btnCopyScript = document.getElementById('btn-copy-script');
 
       // --- Serialization & Sync ---
+      function cleanComponent(obj) {
+        if (Array.isArray(obj)) {
+          return obj.map(cleanComponent);
+        }
+        if (obj !== null && typeof obj === 'object') {
+          const cleaned = {};
+          for (const [key, value] of Object.entries(obj)) {
+            if (key === 'spoiler' && value === false) continue;
+            if (key === 'disabled' && value === false) continue;
+            if (obj.type === 14 && key === 'spacing') continue;
+            if (value === undefined) continue;
+            cleaned[key] = cleanComponent(value);
+          }
+          return cleaned;
+        }
+        return obj;
+      }
+
       function getCleanPayload() {
-        return { component: rootContainer };
+        return { component: cleanComponent(rootContainer) };
+      }
+
+      function getFormattedJson() {
+        const payload = getCleanPayload();
+        return minifyCheckbox.checked
+          ? JSON.stringify(payload)
+          : JSON.stringify(payload, null, 2);
       }
 
       function updatePreview() {
-        const payload = getCleanPayload();
-        const jsonText = JSON.stringify(payload, null, 2);
+        const jsonText = getFormattedJson();
         jsonOutput.textContent = jsonText;
 
         const totalComponents = countComponents(rootContainer);
@@ -843,14 +864,6 @@
             delete comp.accessory;
           }
           renderList();
-        } else if (action === 'toggle-spacing') {
-          const path = target.dataset.path;
-          const comp = getByPath(rootContainer, path);
-          if (comp) {
-            if (target.checked) comp.spacing = 1;
-            else delete comp.spacing;
-            updatePreview();
-          }
         }
       });
 
@@ -886,6 +899,8 @@
         updatePreview();
       });
 
+      minifyCheckbox.addEventListener('change', updatePreview);
+
       // --- Clipboard UX Helper ---
       function handleCopy(button, textGenerator) {
         const originalText = button.textContent;
@@ -896,13 +911,15 @@
       }
 
       btnCopyJson.addEventListener('click', () => {
-        handleCopy(btnCopyJson, () => JSON.stringify(getCleanPayload(), null, 2));
+        handleCopy(btnCopyJson, () => getFormattedJson());
       });
 
       btnCopyScript.addEventListener('click', () => {
         handleCopy(btnCopyScript, () => {
-          const json = JSON.stringify(getCleanPayload(), null, 2);
-          return `<script id="discord:component-embed" type="application/json">\n${json}\n<\/script>`;
+          const json = getFormattedJson();
+          return minifyCheckbox.checked
+            ? `<script id="discord:component-embed" type="application/json">${json}<\/script>`
+            : `<script id="discord:component-embed" type="application/json">\n${json}\n<\/script>`;
         });
       });
 
